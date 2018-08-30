@@ -50,11 +50,11 @@ public class DBService {
         }
     }
 
-    public void insertDBnewDoctor(String[] tabEnterNewDoctor){
+    public void insertDBnewDoctor(String[] tabEnterNewDoctor) {
 
         String name = tabEnterNewDoctor[0];
         String surname = tabEnterNewDoctor[1];
-        Integer spec =  Integer.valueOf(tabEnterNewDoctor[2]);
+        Integer spec = Integer.valueOf(tabEnterNewDoctor[2]);
         String nr_perm = tabEnterNewDoctor[3];
         Integer nr_office = Integer.valueOf(tabEnterNewDoctor[4]);
         String nr_phone = tabEnterNewDoctor[5];
@@ -70,12 +70,12 @@ public class DBService {
             preparedStatement = connection.prepareStatement(sql2);
             preparedStatement.setString(1, name);
             preparedStatement.setString(2, surname);
-            preparedStatement.setInt(3,spec);
-            preparedStatement.setString(4,nr_perm);
-            preparedStatement.setInt(5,nr_office);
-            preparedStatement.setString(6,nr_phone);
-            preparedStatement.setString(7,email);
-            preparedStatement.setFloat(8,price_visit);
+            preparedStatement.setInt(3, spec);
+            preparedStatement.setString(4, nr_perm);
+            preparedStatement.setInt(5, nr_office);
+            preparedStatement.setString(6, nr_phone);
+            preparedStatement.setString(7, email);
+            preparedStatement.setFloat(8, price_visit);
 
             connection.setAutoCommit(false);
             int i = preparedStatement.executeUpdate();
@@ -118,8 +118,7 @@ public class DBService {
             try {
                 preparedStatement.close();
                 connection.close();
-            }
-            catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 
@@ -135,14 +134,15 @@ public class DBService {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
 
-            List<String> list = new ArrayList();
+
+            System.out.println("Lista wszystkich lekarzy");
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("ID_lekarz");
                 String name = resultSet.getString("Imie");
                 String surname = resultSet.getString("Nazwisko");
                 String sum = id + " " + name + " " + surname;
                 System.out.println(sum);
-                list.add(sum);
+
             }
 
         } catch (SQLException e) {
@@ -151,13 +151,82 @@ public class DBService {
             try {
                 preparedStatement.close();
                 connection.close();
-            }
-            catch (SQLException e){
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
 
         }
 
+    }
+
+    public void getDBallDoctorsAndSpecial() {
+        String sql = "SELECT l.ID_Lekarz, l.Imie, l.Nazwisko, s.Specjalizacja FROM lekarze l " +
+                "JOIN specjalizacje s ON l.Specjalizacja=s.id_specjalizacja";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("ID_lekarz");
+                String name = resultSet.getString("Imie");
+                String surname = resultSet.getString("Nazwisko");
+                String specialization = resultSet.getString("Specjalizacja");
+                String sum = id + " " + name + " " + surname + " - " + specialization;
+                System.out.println(sum);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getDBdoctorDetails(Integer idSet) {
+        String sql = "SELECT l.*, s.Specjalizacja FROM lekarze l " +
+                "JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja WHERE Id_lekarz=?";
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,idSet);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("ID_lekarz");
+                String name = resultSet.getString("Imie");
+                String surname = resultSet.getString("Nazwisko");
+                Integer nrSpec = resultSet.getInt("l.Specjalizacja");
+                String nrPermit = resultSet.getString("Nr_uprawnien");
+                String nrOffice = resultSet.getString("Nr_gabinetu");
+                String nrPhone = resultSet.getString("Nr_telefonu");
+                String email = resultSet.getString("Email");
+                Float visitPrice = resultSet.getFloat("Cena_wizyty");
+                String specialization = resultSet.getString("Specjalizacja");
+
+                String sum = id + "| Imie: " + name + "| Nazwisko: " + surname + "| NrSpec: " + nrSpec + "| NrUpraw: " + nrPermit + ""
+                        + "| NrGabinet: " + nrOffice + "| NrTel: " + nrPhone + "| NrEmail: " + email + ""
+                        + "| CenaWizyty: " + visitPrice + "| NazwaSpec: " + specialization + "|";
+                System.out.println(sum);
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void removeDBdoctor(Integer id) {
+        String sql = "DELETE FROM lekarze WHERE ID_lekarz=?";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            int i = preparedStatement.executeUpdate();
+            System.out.println();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 

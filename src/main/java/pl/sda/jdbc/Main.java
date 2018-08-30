@@ -33,13 +33,26 @@ public class Main {
 
         switch (number) {
             case 1:
-                dbService.getDBallDoctors();
+                //dbService.getDBallDoctors();
+                dbService.getDBallDoctorsAndSpecial();
                 break;
 
             case 2:
                 String[] tabStr = new String[8];
                 tabStr = enterNewDoctor();
                 dbService.insertDBnewDoctor(tabStr);
+                break;
+
+            case 3:
+                dbService.getDBallDoctors();
+                int id = removeDoctor();
+                dbService.removeDBdoctor(id);
+                break;
+
+            case 4:
+                dbService.getDBallDoctors();
+                int id2 = getDoctor();
+                dbService.getDBdoctorDetails(id2);
                 break;
 
             case 0:
@@ -50,6 +63,20 @@ public class Main {
 
         }
     }
+
+    private static int getDoctor() {
+        System.out.println("podaj numer lekarza, którego chcesz szczegółowo zobaczyć");
+        Integer id = scanner.nextInt();
+        return id;
+
+    }
+
+    private static int removeDoctor() {
+        System.out.println("podaj numer lekarza, którego chcesz usunąć");
+        Integer id = scanner.nextInt();
+        return id;
+
+   }
 
     private static String[] enterNewDoctor() {
 
@@ -98,11 +125,12 @@ public class Main {
     }
 
     private static void showMenu() {
+        System.out.println("**************************");
         System.out.println("***Przychodnia lekarska***");
         System.out.println("1-lista dostępnych lekarzy");
         System.out.println("2-dodaj nowego lekarza");
         System.out.println("3-usuń istniejacego lekarza");
-
+        System.out.println("4-wyświetl lekarza szczegółowo");
         System.out.println("0-zakończ program");
     }
 
