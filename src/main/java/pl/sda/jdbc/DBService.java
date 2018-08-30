@@ -173,7 +173,7 @@ public class DBService {
                 String name = resultSet.getString("Imie");
                 String surname = resultSet.getString("Nazwisko");
                 String specialization = resultSet.getString("Specjalizacja");
-                String sum = id + " " + name + " " + surname + " - " + specialization;
+                String sum = id + " " + name + " " + surname + " - specjalizacja: " + specialization;
                 System.out.println(sum);
 
             }
@@ -189,7 +189,7 @@ public class DBService {
         try {
             connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1,idSet);
+            preparedStatement.setInt(1, idSet);
             resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("ID_lekarz");
@@ -230,4 +230,58 @@ public class DBService {
     }
 
 
+    public void getDBallPatients() {
+        String sql = "SELECT ID_pacjent, Imie, Nazwisko, Pesel FROM pacjenci order by ID_pacjent";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer id = resultSet.getInt("ID_pacjent");
+                String name = resultSet.getString("Imie");
+                String surname = resultSet.getString("Nazwisko");
+                String pesel = resultSet.getString("Pesel");
+
+                String sum = id + " " + name + " " + surname + " - pesel: " + pesel;
+                System.out.println(sum);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+    public void getDBVisits() {
+        String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel,"+
+                "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora,"+
+                "s.Specjalizacja FROM wizyta w JOIN pacjenci p ON w.Pacjent=p.ID_pacjent JOIN lekarze l ON w.Lekarz=l.ID_lekarz JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                Integer idVisit = resultSet.getInt("ID_wizyta");
+                String namePatient = resultSet.getString("ImiePacjenta");
+                String surnamePatient = resultSet.getString("NazwiskoPacjenta");
+                String peselPatient = resultSet.getString("Pesel");
+                String nameDoctor = resultSet.getString("ImieDoktora");
+                String surnameDoctor = resultSet.getString("NazwiskoDoktora");
+                String specjalizationDoctor = resultSet.getString("Specjalizacja");
+
+                String sum = idVisit + "| ImiePacjenta: " + namePatient + "| NazwiskoPacjenta: " + surnamePatient +""
+                         + "| PeselPacjenta: " + peselPatient + "| ImieDoctora: " + nameDoctor + "| NazwiskoDoktora: " + surnameDoctor +""
+                        + "| SpecjDoktora: " + specjalizationDoctor;
+
+                System.out.println(sum);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }

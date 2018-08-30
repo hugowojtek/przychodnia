@@ -55,6 +55,13 @@ public class Main {
                 dbService.getDBdoctorDetails(id2);
                 break;
 
+            case 5:
+                dbService.getDBallPatients();
+                break;
+
+            case 6:
+                dbService.getDBVisits();
+                break;
             case 0:
                 System.out.println("kończe...");
                 System.exit(0);
@@ -131,6 +138,8 @@ public class Main {
         System.out.println("2-dodaj nowego lekarza");
         System.out.println("3-usuń istniejacego lekarza");
         System.out.println("4-wyświetl lekarza szczegółowo");
+        System.out.println("5-lista dostępnych pacjentów");
+        System.out.println("6-lista zarezerwowanych wizyt");
         System.out.println("0-zakończ program");
     }
 
