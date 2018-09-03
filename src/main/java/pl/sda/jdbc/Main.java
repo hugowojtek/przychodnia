@@ -78,6 +78,9 @@ public class Main {
                 dbService.removeDBpatient(id4);
                 break;
 
+            case 11:
+
+
             case 0:
                 System.out.println("kończe...");
                 System.exit(0);
@@ -104,8 +107,16 @@ public class Main {
 
     }
 
+
     private static int getPatient() {
         System.out.println("podaj numer pacjenta, którego chcesz szczegółowo zobaczyć");
+        Integer id = scanner.nextInt();
+        return id;
+
+    }
+
+    private static int setDoctor() {
+        System.out.println("podaj numer lekarza, do którego chcesz wizytę");
         Integer id = scanner.nextInt();
         return id;
 
@@ -115,6 +126,13 @@ public class Main {
         System.out.println("podaj numer pacjenta, którego chcesz usunąć");
         Integer id = scanner.nextInt();
         return id;
+    }
+
+    private static int setPatient() {
+        System.out.println("podaj numer pacjenta, któremu chcesz ustalić wizytę");
+        Integer id = scanner.nextInt();
+        return id;
+
     }
 
     private static String[] enterNewDoctor() {
@@ -226,6 +244,21 @@ public class Main {
 
         return tabStr;
     }
+
+    private static String[] enterNewVisit() {
+
+        String[] tabStr = new String[4];
+        dbService.getDBallDoctors();
+        int IdDoctor = setDoctor();
+        int IdPatient = setPatient();
+
+
+        return tabStr;
+
+    }
+
+
+
 
     private static void showMenu() {
         System.out.println("**************************");
