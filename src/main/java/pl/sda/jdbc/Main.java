@@ -1,8 +1,5 @@
 package pl.sda.jdbc;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -62,6 +59,25 @@ public class Main {
             case 6:
                 dbService.getDBVisitsWithDate();
                 break;
+
+            case 7:
+                dbService.getDBallPatients();
+                Integer id3 = getPatient();
+                dbService.getDBpatientDetails(id3);
+                break;
+
+            case 8:
+                String[] tabStr2 = new String[9];
+                tabStr2 = enterNewPatient();
+                dbService.getDBnewPatient(tabStr2);
+                break;
+
+            case 9:
+                dbService.getDBallPatients();
+                int id4 = removePatient();
+                dbService.removeDBpatient(id4);
+                break;
+
             case 0:
                 System.out.println("kończe...");
                 System.exit(0);
@@ -70,6 +86,9 @@ public class Main {
 
         }
     }
+
+
+
 
     private static int getDoctor() {
         System.out.println("podaj numer lekarza, którego chcesz szczegółowo zobaczyć");
@@ -83,7 +102,20 @@ public class Main {
         Integer id = scanner.nextInt();
         return id;
 
-   }
+    }
+
+    private static int getPatient() {
+        System.out.println("podaj numer pacjenta, którego chcesz szczegółowo zobaczyć");
+        Integer id = scanner.nextInt();
+        return id;
+
+    }
+
+    private static int removePatient() {
+        System.out.println("podaj numer pacjenta, którego chcesz usunąć");
+        Integer id = scanner.nextInt();
+        return id;
+    }
 
     private static String[] enterNewDoctor() {
 
@@ -131,6 +163,70 @@ public class Main {
         return tabStr;
     }
 
+    private static String[] enterNewPatient() {
+
+        String[] tabStr = new String[9];
+
+        System.out.println("podaj imię pacjenta");
+        String name = scanner.next();
+        tabStr[0] = name;
+
+        System.out.println("podaj nazwisko pacjenta");
+        String surname = scanner.next();
+        tabStr[1] = surname;
+
+        System.out.println("podaj pesel pacjenta");
+        String pesel = scanner.next();
+        tabStr[2] = pesel;
+
+        System.out.println("podaj datę urodzenia pacjenta");
+        String dateBirth = scanner.next();
+        tabStr[3] = dateBirth;
+
+        System.out.println("podaj płeć pacjenta");
+        String sex = scanner.next();
+        tabStr[4] = sex;
+
+        System.out.println("podaj miasto zamieszkania pacjenta");
+        String city = scanner.next();
+        tabStr[5] = city;
+
+        System.out.println("podaj ulicę zamieszkania pacjenta");
+        String street = scanner.next();
+        tabStr[6] = street;
+
+        System.out.println("podaj numer domu/lokalu pacjenta ");
+        String numberHouse = scanner.next();
+        tabStr[7] = numberHouse;
+
+        System.out.println("podaj województwo");
+
+        System.out.println("1-dolnośląskie");
+        System.out.println("2-kujawsko-pomorskie");
+        System.out.println("3-lubelskie");
+        System.out.println("4-lubuskie");
+
+        System.out.println("5-łódzkie");
+        System.out.println("6-małopolskie");
+        System.out.println("7-mazowieckie");
+        System.out.println("8-opolskie");
+
+        System.out.println("9-podkarpackie");
+        System.out.println("10-podlaskie");
+        System.out.println("11-pomorskie");
+        System.out.println("12-śląskie");
+
+        System.out.println("13-świętokrzyskie");
+        System.out.println("14-warmińsko-mazurskie");
+        System.out.println("15-wielkopolskie");
+        System.out.println("16-zachodniopomorskie");
+
+        Integer spec = scanner.nextInt();
+        tabStr[8] = String.valueOf(spec);
+
+        return tabStr;
+    }
+
     private static void showMenu() {
         System.out.println("**************************");
         System.out.println("***Przychodnia lekarska***");
@@ -140,6 +236,10 @@ public class Main {
         System.out.println("4-wyświetl lekarza szczegółowo");
         System.out.println("5-lista dostępnych pacjentów");
         System.out.println("6-lista zarezerwowanych wizyt");
+        System.out.println("7-wyświetl pacjenta szczegółowo");
+        System.out.println("8-dodaj nowego pacjenta");
+        System.out.println("9-usuń istniejacego pacjenta");
+
         System.out.println("0-zakończ program");
     }
 

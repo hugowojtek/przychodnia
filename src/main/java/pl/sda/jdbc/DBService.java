@@ -201,11 +201,12 @@ public class DBService {
                 String nrPhone = resultSet.getString("Nr_telefonu");
                 String email = resultSet.getString("Email");
                 Float visitPrice = resultSet.getFloat("Cena_wizyty");
-                String specialization = resultSet.getString("Specjalizacja");
+                Integer numberSpecjalization = resultSet.getInt("l.Specjalizacja");
+                String textSpecjalization = resultSet.getString("s.Specjalizacja");
 
                 String sum = id + "| Imie: " + name + "| Nazwisko: " + surname + "| NrSpec: " + nrSpec + "| NrUpraw: " + nrPermit + ""
                         + "| NrGabinet: " + nrOffice + "| NrTel: " + nrPhone + "| NrEmail: " + email + ""
-                        + "| CenaWizyty: " + visitPrice + "| NazwaSpec: " + specialization + "|";
+                        + "| CenaWizyty: " + visitPrice + "| NrSpec: " + numberSpecjalization + "| NazwaSpec: " + textSpecjalization;
                 System.out.println(sum);
 
             }
@@ -223,7 +224,7 @@ public class DBService {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             int i = preparedStatement.executeUpdate();
-            System.out.println();
+            System.out.println("usunięto "+i+" pozycję");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -255,8 +256,8 @@ public class DBService {
     }
 
     public void getDBVisits() {
-        String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel,"+
-                "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora,"+
+        String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel," +
+                "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora," +
                 "s.Specjalizacja FROM wizyta w JOIN pacjenci p ON w.Pacjent=p.ID_pacjent JOIN lekarze l ON w.Lekarz=l.ID_lekarz JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja";
 
         try {
@@ -264,7 +265,7 @@ public class DBService {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Integer idVisit = resultSet.getInt("ID_wizyta");
                 String namePatient = resultSet.getString("ImiePacjenta");
                 String surnamePatient = resultSet.getString("NazwiskoPacjenta");
@@ -277,8 +278,8 @@ public class DBService {
 //                         + "| PeselPacjenta: " + peselPatient + "| ImieDoctora: " + nameDoctor + "| NazwiskoDoktora: " + surnameDoctor +""
 //                        + "| SpecjDoktora: " + specjalizationDoctor;
 
-                String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient +""
-                        + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor +""
+                String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient + ""
+                        + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor + ""
                         + "| Specjalizacja: " + specjalizationDoctor;
 
                 System.out.println(sum);
@@ -290,8 +291,8 @@ public class DBService {
     }
 
     public void getDBVisitsWithDate() {
-        String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel,"+
-                "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora, s.Specjalizacja,w.Data_wizyty as DataWizyty,"+
+        String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel," +
+                "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora, s.Specjalizacja,w.Data_wizyty as DataWizyty," +
                 "w.Data_umowienia as DataUmowienia FROM wizyta w JOIN pacjenci p ON w.Pacjent=p.ID_pacjent JOIN lekarze l ON w.Lekarz=l.ID_lekarz JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja";
 
         try {
@@ -299,7 +300,7 @@ public class DBService {
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
 
-            while(resultSet.next()){
+            while (resultSet.next()) {
                 Integer idVisit = resultSet.getInt("ID_wizyta");
                 String namePatient = resultSet.getString("ImiePacjenta");
                 String surnamePatient = resultSet.getString("NazwiskoPacjenta");
@@ -307,19 +308,118 @@ public class DBService {
                 String nameDoctor = resultSet.getString("ImieDoktora");
                 String surnameDoctor = resultSet.getString("NazwiskoDoktora");
                 String specjalizationDoctor = resultSet.getString("Specjalizacja");
-                String dateVisit = resultSet.getString("DataWizyty").substring(0,10);
-                String dateBooking = resultSet.getString("DataUmowienia").substring(0,10);
+                String dateVisit = resultSet.getString("DataWizyty").substring(0, 10);
+                String dateBooking = resultSet.getString("DataUmowienia").substring(0, 10);
 
 //                String sum = idVisit + "| ImiePacjenta: " + namePatient + "| NazwiskoPacjenta: " + surnamePatient +""
 //                         + "| PeselPacjenta: " + peselPatient + "| ImieDoctora: " + nameDoctor + "| NazwiskoDoktora: " + surnameDoctor +""
 //                        + "| SpecjDoktora: " + specjalizationDoctor;
 
-                String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient +""
-                        + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor +""
+                String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient + ""
+                        + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor + ""
                         + "| Specjalizacja: " + specjalizationDoctor + "| DataWizyty: " + dateVisit + "| DataUmowienia: " + dateBooking;
 
                 System.out.println(sum);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getDBpatientDetails(Integer id) {
+        String sql = "SELECT p.*, w.wojewodztwo FROM pacjenci p " +
+                "JOIN wojewodztwa w ON p.wojewodztwo=w.ID_wojewodztwa WHERE Id_pacjent=?";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, id);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Integer lp = resultSet.getInt("ID_pacjent");
+                String namePatient = resultSet.getString("Imie");
+                String surnamePatient = resultSet.getString("Nazwisko");
+                String peselPatient = resultSet.getString("Pesel");
+                String dataBirth = resultSet.getString("Data_urodzenia");
+                String sex = resultSet.getString("Plec");
+                String city = resultSet.getString("miasto");
+                String street = resultSet.getString("ulica");
+                String numberHouse = resultSet.getString("nr_lokalu");
+                Integer numberDistrict = resultSet.getInt("p.wojewodztwo");
+                String textDistrict = resultSet.getString("w.wojewodztwo");
+
+                String sum = lp + "| " + namePatient + "| " + surnamePatient + ""
+                        + "| Pesel: " + peselPatient + "| data_urodzenia: " + dataBirth + "| płeć: " + sex + ""
+                        + "| miasto: " + city + "| ulica: " + street + "| nr_domu: " + numberHouse + ""
+                        + "| nr_wojewodztwa: " + numberDistrict + "| nazwa_wojewodztwa: " + textDistrict;
+
+                System.out.println(sum);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getDBnewPatient(String[] tabEnterNewPatient) {
+
+        String name = tabEnterNewPatient[0];
+        String surname = tabEnterNewPatient[1];
+        String pesel = tabEnterNewPatient[2];
+        String dateBirth = tabEnterNewPatient[3];
+        String sex = tabEnterNewPatient[4];
+        String city = tabEnterNewPatient[5];
+        String street = tabEnterNewPatient[6];
+        String numberHouse = tabEnterNewPatient[7];
+        String district = tabEnterNewPatient[8];
+
+        String sql2 = "INSERT INTO pacjenci(Imie,Nazwisko,Pesel," +
+                "Data_urodzenia,Plec,miasto," +
+                "ulica,nr_lokalu,wojewodztwo) VALUES (?,?,?,?,?,?,?,?,?)";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql2);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, surname);
+            preparedStatement.setString(3, pesel);
+            preparedStatement.setString(4, dateBirth);
+            preparedStatement.setString(5, sex);
+            preparedStatement.setString(6, city);
+            preparedStatement.setString(7, street);
+            preparedStatement.setString(8, numberHouse);
+            preparedStatement.setString(9, district);
+
+            connection.setAutoCommit(false);
+            int i = preparedStatement.executeUpdate();
+//            connection.rollback();
+            connection.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                preparedStatement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    public void removeDBpatient(int id4) {
+        String sql = "DELETE FROM pacjenci WHERE ID_pacjent=?";
+
+        try {
+            connection=DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,id4);
+            int i = preparedStatement.executeUpdate();
+            System.out.println("usunięto "+i+" pozycję");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
