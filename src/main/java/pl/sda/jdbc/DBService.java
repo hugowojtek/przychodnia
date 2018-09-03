@@ -273,9 +273,50 @@ public class DBService {
                 String surnameDoctor = resultSet.getString("NazwiskoDoktora");
                 String specjalizationDoctor = resultSet.getString("Specjalizacja");
 
-                String sum = idVisit + "| ImiePacjenta: " + namePatient + "| NazwiskoPacjenta: " + surnamePatient +""
-                         + "| PeselPacjenta: " + peselPatient + "| ImieDoctora: " + nameDoctor + "| NazwiskoDoktora: " + surnameDoctor +""
-                        + "| SpecjDoktora: " + specjalizationDoctor;
+//                String sum = idVisit + "| ImiePacjenta: " + namePatient + "| NazwiskoPacjenta: " + surnamePatient +""
+//                         + "| PeselPacjenta: " + peselPatient + "| ImieDoctora: " + nameDoctor + "| NazwiskoDoktora: " + surnameDoctor +""
+//                        + "| SpecjDoktora: " + specjalizationDoctor;
+
+                String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient +""
+                        + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor +""
+                        + "| Specjalizacja: " + specjalizationDoctor;
+
+                System.out.println(sum);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void getDBVisitsWithDate() {
+        String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel,"+
+                "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora, s.Specjalizacja,w.Data_wizyty as DataWizyty,"+
+                "w.Data_umowienia as DataUmowienia FROM wizyta w JOIN pacjenci p ON w.Pacjent=p.ID_pacjent JOIN lekarze l ON w.Lekarz=l.ID_lekarz JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            resultSet = preparedStatement.executeQuery();
+
+            while(resultSet.next()){
+                Integer idVisit = resultSet.getInt("ID_wizyta");
+                String namePatient = resultSet.getString("ImiePacjenta");
+                String surnamePatient = resultSet.getString("NazwiskoPacjenta");
+                String peselPatient = resultSet.getString("Pesel");
+                String nameDoctor = resultSet.getString("ImieDoktora");
+                String surnameDoctor = resultSet.getString("NazwiskoDoktora");
+                String specjalizationDoctor = resultSet.getString("Specjalizacja");
+                String dateVisit = resultSet.getString("DataWizyty").substring(0,10);
+                String dateBooking = resultSet.getString("DataUmowienia").substring(0,10);
+
+//                String sum = idVisit + "| ImiePacjenta: " + namePatient + "| NazwiskoPacjenta: " + surnamePatient +""
+//                         + "| PeselPacjenta: " + peselPatient + "| ImieDoctora: " + nameDoctor + "| NazwiskoDoktora: " + surnameDoctor +""
+//                        + "| SpecjDoktora: " + specjalizationDoctor;
+
+                String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient +""
+                        + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor +""
+                        + "| Specjalizacja: " + specjalizationDoctor + "| DataWizyty: " + dateVisit + "| DataUmowienia: " + dateBooking;
 
                 System.out.println(sum);
             }

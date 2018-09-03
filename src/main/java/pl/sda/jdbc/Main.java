@@ -60,7 +60,7 @@ public class Main {
                 break;
 
             case 6:
-                dbService.getDBVisits();
+                dbService.getDBVisitsWithDate();
                 break;
             case 0:
                 System.out.println("kończe...");
