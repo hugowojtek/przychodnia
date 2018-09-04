@@ -79,6 +79,14 @@ public class Main {
                 break;
 
             case 11:
+                dbService.getDBallDoctors();
+                int idDoctor = setNewVisitForDoctor();
+                dbService.getDBallPatients();
+                int idPatient = setNewVisitForPatient();
+                String dateVisit = setNewVisitDate();
+                dbService.insertDBnewVisit(idDoctor, idPatient, dateVisit);
+
+                break;
 
 
             case 0:
@@ -90,7 +98,20 @@ public class Main {
         }
     }
 
+    private static String setNewVisitDate() {
+        System.out.println("podaj date wizyty");
+        return scanner.nextLine();
+    }
 
+    private static int setNewVisitForPatient() {
+        System.out.println("podaj numer id pacjenta, dla którego chcesz zamówić wizytę");
+        return scanner.nextInt();
+    }
+
+    private static int setNewVisitForDoctor() {
+        System.out.println("podaj numer id lekarza, do którego chcesz zamówić wizytę");
+        return scanner.nextInt();
+    }
 
 
     private static int getDoctor() {
@@ -258,8 +279,6 @@ public class Main {
     }
 
 
-
-
     private static void showMenu() {
         System.out.println("**************************");
         System.out.println("***Przychodnia lekarska***");
@@ -273,7 +292,11 @@ public class Main {
         System.out.println("8-dodaj nowego pacjenta");
         System.out.println("9-usuń istniejacego pacjenta");
 
+        System.out.println("11-dodaj nowy termin wizyty");
+        System.out.println("12-usuń stary termin wizyty");
+
         System.out.println("0-zakończ program");
+        System.out.println("?");
     }
 
 

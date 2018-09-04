@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DBService {
     private final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
-    private final String URL_CONNECTION_STRING = "jdbc:mysql://localhost:3306/przychodnia?serverTimezone=CET";
+    private final String URL_CONNECTION_STRING = "jdbc:mysql://localhost:3306/przychodnia?serverTimezone=CET&autoReconnect=true&useSSL=false";
     private final String USER = "root";
     private final String PASSWORD = "hugo";
     private Connection connection = null;
@@ -135,7 +135,7 @@ public class DBService {
             resultSet = preparedStatement.executeQuery();
 
 
-            System.out.println("Lista wszystkich lekarzy");
+            System.out.println("---Lista wszystkich lekarzy: ");
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("ID_lekarz");
                 String name = resultSet.getString("Imie");
@@ -238,6 +238,8 @@ public class DBService {
             connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
             preparedStatement = connection.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
+
+            System.out.println("--Lista wszystkich pacjentów: ");
             while (resultSet.next()) {
                 Integer id = resultSet.getInt("ID_pacjent");
                 String name = resultSet.getString("Imie");
@@ -423,6 +425,27 @@ public class DBService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+    }
+
+    public void insertDBnewVisit(int idDoctor, int idPatient, String dateVisit) {
+        String sql = "SELECT ID_lekarz,Nr_uprawnien FROM lekarze WHERE ID_lekarz=?";
+        List<String> listOfAllDaysVisitsForDoctor = new ArrayList();
+
+        try {
+            connection=DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,idDoctor);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()){
+                String visit = resultSet.getString("Data_wizyty");
+                listOfAllDaysVisitsForDoctor.add(visit);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }
