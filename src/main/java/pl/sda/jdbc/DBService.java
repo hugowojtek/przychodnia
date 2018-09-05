@@ -1,8 +1,7 @@
 package pl.sda.jdbc;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class DBService {
     private final String DRIVER_NAME = "com.mysql.cj.jdbc.Driver";
@@ -224,7 +223,7 @@ public class DBService {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, id);
             int i = preparedStatement.executeUpdate();
-            System.out.println("usunięto "+i+" pozycję");
+            System.out.println("usunięto " + i + " pozycję");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -416,11 +415,11 @@ public class DBService {
         String sql = "DELETE FROM pacjenci WHERE ID_pacjent=?";
 
         try {
-            connection=DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1,id4);
+            preparedStatement.setInt(1, id4);
             int i = preparedStatement.executeUpdate();
-            System.out.println("usunięto "+i+" pozycję");
+            System.out.println("usunięto " + i + " pozycję");
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -429,23 +428,57 @@ public class DBService {
     }
 
     public void insertDBnewVisit(int idDoctor, int idPatient, String dateVisit) {
-        String sql = "SELECT ID_lekarz,Nr_uprawnien FROM lekarze WHERE ID_lekarz=?";
-        List<String> listOfAllDaysVisitsForDoctor = new ArrayList();
+        String sql = "SELECT w.Data_wizyty FROM wizyta w JOIN lekarze l ON w.Lekarz = l.ID_lekarz WHERE ID_lekarz=?";
+
+        Set<String> set = null;
+        Map<String,Set<String>> map = new TreeMap<String, Set<String>>();
 
         try {
-            connection=DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
             preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setInt(1,idDoctor);
+            preparedStatement.setInt(1, idDoctor);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            while (resultSet.next()){
+
+            while (resultSet.next()) {
                 String visit = resultSet.getString("Data_wizyty");
-                listOfAllDaysVisitsForDoctor.add(visit);
+                String date = visit.substring(0, 10);
+                String time = visit.substring(11);
+
+                set = new TreeSet<String>();
+                boolean mark = false;
+
+                for (Map.Entry m:map.entrySet()){
+                    if (date.equals(m.getKey())){
+
+                        Set<String> set2 = (Set)m.getValue();
+                        set2.add(time);
+                        m.setValue(set2);
+                        mark = true;
+                        break;
+                    }
+                }
+
+                if (!(mark)) {
+                    set.add(time);
+                    map.put(date, set);
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
+        String dateForCheck = dateVisit.substring(0, 10);
+        String timeForCheck = dateVisit.substring(11);
+        int hourTimeForCheck = Integer.parseInt(timeForCheck.substring(11, 2));
+        int minuteTimeForCheck = Integer.parseInt(timeForCheck.substring(15, 2));
 
+//        for (String l : listOfVisitsForDoctor) {
+//            String date = l.substring(0, 10);
+//            String time = l.substring(11, 5);
+//            int hourTime = Integer.parseInt(time.substring(11, 2));
+//            int minuteTime = Integer.parseInt(time.substring(15, 2));
+//
+//        }
     }
 }

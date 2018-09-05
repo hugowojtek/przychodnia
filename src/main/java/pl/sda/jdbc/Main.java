@@ -1,6 +1,6 @@
 package pl.sda.jdbc;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -14,12 +14,65 @@ public class Main {
 
     public static void main(String[] args) {
 
-        new Main();
 
-        while (true) {
-            showMenu();
-            choice();
+
+        scanner = new Scanner(System.in);
+        Set<String> set = null;
+        Map<String,Set<String>> map = new TreeMap<String, Set<String>>();
+        while(true) {
+            set = new TreeSet<String>();
+            boolean mark = false;
+            System.out.println("podaj date i godzine");
+            String visit = scanner.nextLine();
+            if (visit.equals("1")) break;
+            String date = visit.substring(0, 10);
+            String time = visit.substring(11);
+            for (Map.Entry m:map.entrySet()){
+                if (date.equals(m.getKey())){
+
+                    Set<String> set2 = (Set)m.getValue();
+                    set2.add(time);
+                    m.setValue(set2);
+                    mark = true;
+                    break;
+                }
+            }
+            if (!(mark)) {
+                set.add(time);
+                map.put(date, set);
+            }
+
         }
+
+        while(true){
+            System.out.println("podaj date i godzine do sprawdzenia");
+            String visit = scanner.nextLine();
+            if (visit.equals("2")) break;
+            String date = visit.substring(0, 10);
+            String time = visit.substring(11);
+            if (map.containsKey(date)) {
+                Set<String> set3 = map.get(date);
+                if (set3.contains(time)) {
+                    System.out.println("termin zajęty");
+                } else {
+                    System.out.println("wolny termin");
+                    set3.add(time);
+                    map.put(date,set3);
+                }
+            }
+            else {
+                System.out.println("wolny termin");
+
+            }
+        }
+
+
+//        new Main();
+//
+//        while (true) {
+//            showMenu();
+//            choice();
+//        }
 
 
     }
