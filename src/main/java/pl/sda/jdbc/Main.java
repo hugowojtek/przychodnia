@@ -50,8 +50,9 @@ public class Main {
             if (visit.equals("2")) break;
             String date = visit.substring(0, 10);
             String time = visit.substring(11);
+            Set<String> set3 = null;
             if (map.containsKey(date)) {
-                Set<String> set3 = map.get(date);
+                set3 = map.get(date);
                 if (set3.contains(time)) {
                     System.out.println("termin zajęty");
                 } else {
@@ -62,7 +63,9 @@ public class Main {
             }
             else {
                 System.out.println("wolny termin");
-
+                set3 = new TreeSet<String>();
+                set3.add(time);
+                map.put(date,set3);
             }
         }
 
