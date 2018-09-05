@@ -294,7 +294,7 @@ public class DBService {
     public void getDBVisitsWithDate() {
         String sql = "SELECT w.ID_wizyta, p.Imie as ImiePacjenta, p.Nazwisko as NazwiskoPacjenta, p.Pesel," +
                 "l.Imie as ImieDoktora, l.Nazwisko as NazwiskoDoktora, s.Specjalizacja,w.Data_wizyty as DataWizyty," +
-                "w.Data_umowienia as DataUmowienia FROM wizyta w JOIN pacjenci p ON w.Pacjent=p.ID_pacjent JOIN lekarze l ON w.Lekarz=l.ID_lekarz JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja";
+                "w.Data_umowienia as DataUmowienia FROM wizyta w JOIN pacjenci p ON w.Pacjent=p.ID_pacjent JOIN lekarze l ON w.Lekarz=l.ID_lekarz JOIN specjalizacje s ON l.Specjalizacja=s.ID_specjalizacja GROUP BY w.ID_wizyta ";
 
         try {
             connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
@@ -309,7 +309,7 @@ public class DBService {
                 String nameDoctor = resultSet.getString("ImieDoktora");
                 String surnameDoctor = resultSet.getString("NazwiskoDoktora");
                 String specjalizationDoctor = resultSet.getString("Specjalizacja");
-                String dateVisit = resultSet.getString("DataWizyty").substring(0, 10);
+                String dateVisit = resultSet.getString("DataWizyty");//.substring(0, 10);
                 String dateBooking = resultSet.getString("DataUmowienia").substring(0, 10);
 
 //                String sum = idVisit + "| ImiePacjenta: " + namePatient + "| NazwiskoPacjenta: " + surnamePatient +""
@@ -318,7 +318,7 @@ public class DBService {
 
                 String sum = idVisit + "| DanePacjenta: " + namePatient + "| " + surnamePatient + ""
                         + "| Pesel: " + peselPatient + "| DaneDoctora: " + nameDoctor + "| " + surnameDoctor + ""
-                        + "| Specjalizacja: " + specjalizationDoctor + "| DataWizyty: " + dateVisit + "| DataUmowienia: " + dateBooking;
+                        + "| Specjalizacja: " + specjalizationDoctor + "| DataWizyty: " + dateVisit;// + "| DataUmowienia: " + dateBooking;
 
                 System.out.println(sum);
             }
@@ -427,7 +427,8 @@ public class DBService {
 
     }
 
-    public void insertDBnewVisit(int idDoctor, int idPatient, String dateVisit) {
+    public boolean insertDBnewVisit(int idDoctor, int idPatient, String dateVisit) {
+
         String sql = "SELECT w.Data_wizyty FROM wizyta w JOIN lekarze l ON w.Lekarz = l.ID_lekarz WHERE ID_lekarz=?";
 
         Set<String> set = null;
@@ -470,15 +471,39 @@ public class DBService {
 
         String dateForCheck = dateVisit.substring(0, 10);
         String timeForCheck = dateVisit.substring(11);
-        int hourTimeForCheck = Integer.parseInt(timeForCheck.substring(11, 2));
-        int minuteTimeForCheck = Integer.parseInt(timeForCheck.substring(15, 2));
+        Set<String> set3 = null;
+        if (map.containsKey(dateForCheck)) {
+            set3 = map.get(dateForCheck);
+            if (set3.contains(timeForCheck)) {
+                //System.out.println("termin zajęty");
+                return false;
+            } else {
+                //System.out.println("wolny termin wiec rezerwujemy");
+                set3.add(timeForCheck);
+                map.put(dateForCheck, set3);
+            }
+        } else {
+            //System.out.println("wolny termin wiec rezerwujemy");
+            set3 = new TreeSet<String>();
+            set3.add(timeForCheck);
+            map.put(dateForCheck, set3);
+        }
 
-//        for (String l : listOfVisitsForDoctor) {
-//            String date = l.substring(0, 10);
-//            String time = l.substring(11, 5);
-//            int hourTime = Integer.parseInt(time.substring(11, 2));
-//            int minuteTime = Integer.parseInt(time.substring(15, 2));
-//
-//        }
+
+        String sql2 = "INSERT INTO wizyta(Pacjent,Lekarz,Data_wizyty,Data_umowienia) VALUES (?,?,?,?)";
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql2);
+            preparedStatement.setInt(1,idPatient);
+            preparedStatement.setInt(2,idDoctor);
+            preparedStatement.setString(3,dateVisit);
+            preparedStatement.setString(4,"2010-01-01-01:00:00");
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return true;
     }
 }

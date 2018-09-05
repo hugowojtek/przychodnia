@@ -14,68 +14,12 @@ public class Main {
 
     public static void main(String[] args) {
 
+        new Main();
 
-
-        scanner = new Scanner(System.in);
-        Set<String> set = null;
-        Map<String,Set<String>> map = new TreeMap<String, Set<String>>();
-        while(true) {
-            set = new TreeSet<String>();
-            boolean mark = false;
-            System.out.println("podaj date i godzine");
-            String visit = scanner.nextLine();
-            if (visit.equals("1")) break;
-            String date = visit.substring(0, 10);
-            String time = visit.substring(11);
-            for (Map.Entry m:map.entrySet()){
-                if (date.equals(m.getKey())){
-
-                    Set<String> set2 = (Set)m.getValue();
-                    set2.add(time);
-                    m.setValue(set2);
-                    mark = true;
-                    break;
-                }
-            }
-            if (!(mark)) {
-                set.add(time);
-                map.put(date, set);
-            }
-
+        while (true) {
+            showMenu();
+            choice();
         }
-
-        while(true){
-            System.out.println("podaj date i godzine do sprawdzenia");
-            String visit = scanner.nextLine();
-            if (visit.equals("2")) break;
-            String date = visit.substring(0, 10);
-            String time = visit.substring(11);
-            Set<String> set3 = null;
-            if (map.containsKey(date)) {
-                set3 = map.get(date);
-                if (set3.contains(time)) {
-                    System.out.println("termin zajęty");
-                } else {
-                    System.out.println("wolny termin");
-                    set3.add(time);
-                    map.put(date,set3);
-                }
-            }
-            else {
-                System.out.println("wolny termin");
-                set3 = new TreeSet<String>();
-                set3.add(time);
-                map.put(date,set3);
-            }
-        }
-
-
-//        new Main();
-//
-//        while (true) {
-//            showMenu();
-//            choice();
-//        }
 
 
     }
@@ -139,9 +83,13 @@ public class Main {
                 int idDoctor = setNewVisitForDoctor();
                 dbService.getDBallPatients();
                 int idPatient = setNewVisitForPatient();
-                String dateVisit = setNewVisitDate();
-                dbService.insertDBnewVisit(idDoctor, idPatient, dateVisit);
-
+                String  dateVisit = setNewVisitDate();
+                if (dbService.insertDBnewVisit(idDoctor, idPatient, dateVisit)) {
+                    System.out.println("wolny termin wiec rezerwujemy");
+                }
+                else {
+                    System.out.println("termin zajęty - wybierz inny");
+                }
                 break;
 
 
@@ -156,7 +104,7 @@ public class Main {
 
     private static String setNewVisitDate() {
         System.out.println("podaj date wizyty");
-        return scanner.nextLine();
+        return scanner.next();
     }
 
     private static int setNewVisitForPatient() {
