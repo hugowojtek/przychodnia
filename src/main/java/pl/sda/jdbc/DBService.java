@@ -506,4 +506,19 @@ public class DBService {
 
         return true;
     }
+
+    public int removeDBvisit(int idVisit) {
+        String sql = "DELETE FROM wizyta WHERE ID_wizyta=?";
+        int result = 0;
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, idVisit);
+            result = preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return  result;
+    }
 }

@@ -93,6 +93,18 @@ public class Main {
                 break;
 
 
+            case 12:
+                dbService.getDBVisitsWithDate();
+                int idVisit = removeVisit();
+                if (dbService.removeDBvisit(idVisit)!=0){
+                    System.out.println("termin usunięto");
+                }
+                else {
+                    System.out.println("problem z usunięciem terminu");
+                }
+                break;
+
+
             case 0:
                 System.out.println("kończe...");
                 System.exit(0);
@@ -101,6 +113,12 @@ public class Main {
 
         }
     }
+
+    private static int removeVisit() {
+        System.out.println("podaj numer id wizyty do usunięcia");
+        return scanner.nextInt();
+    }
+
 
     private static String setNewVisitDate() {
         System.out.println("podaj date wizyty");
