@@ -122,7 +122,7 @@ public class Main {
                 break;
 
             case 0:
-                System.out.println("kończe...");
+                System.out.println("kończe.....");
                 System.exit(0);
 
             default:
