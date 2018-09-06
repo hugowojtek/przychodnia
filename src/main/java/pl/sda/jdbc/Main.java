@@ -108,7 +108,17 @@ public class Main {
             case 13:
                 dbService.getDBallDoctors();
                 int idDoctor2 = schowVisitForDoctor();
-                dbService.GetVisitsAllForDoctorWithDate(idDoctor2);
+                dbService.getDBvisitsAllForDoctorWithDate(idDoctor2);
+                break;
+
+            case 14:
+                dbService.getDBvisitsAllForEveryDoctorsWithDate();
+                break;
+
+            case 15:
+                dbService.getDBallPatients();
+                int idPatient2 = showVisitForPatient();
+                dbService.getDBvisitsAllForPatient(idPatient2);
                 break;
 
             case 0:
@@ -118,6 +128,11 @@ public class Main {
             default:
 
         }
+    }
+
+    private static int showVisitForPatient() {
+        System.out.println("podaj numer id pacjenta, którego wizyty chcesz zobaczyć");
+        return scanner.nextInt();
     }
 
 
@@ -330,6 +345,7 @@ public class Main {
         System.out.println("12-usuń stary termin wizyty");
         System.out.println("13-wizyty danego lekarza");
         System.out.println("14-wizyty wszystkich lekarzy");
+        System.out.println("15-wizyty danego pacjenta");
 
         System.out.println("0-zakończ program");
         System.out.println("?");
