@@ -521,4 +521,61 @@ public class DBService {
         }
         return  result;
     }
+
+    public void GetVisitsAllForDoctorWithDate(int idDoctor2) {
+
+        String sql = "SELECT w.Data_wizyty FROM wizyta w JOIN lekarze l ON w.Lekarz = l.ID_lekarz WHERE ID_lekarz=?";
+
+        Set<String> set = null;
+        Map<String,Set<String>> map = new TreeMap<String, Set<String>>();
+
+        try {
+            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1,idDoctor2);
+            resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()){
+
+                String visit = resultSet.getString("Data_wizyty");
+                String date = visit.substring(0, 10);
+                String time = visit.substring(11);
+
+                set = new TreeSet<String>();
+                boolean mark = false;
+
+                for (Map.Entry m:map.entrySet()){
+                    if (date.equals(m.getKey())){
+
+                        Set<String> set2 = (Set)m.getValue();
+                        set2.add(time);
+                        m.setValue(set2);
+                        mark = true;
+                        break;
+                    }
+                }
+
+                if (!(mark)) {
+                    set.add(time);
+                    map.put(date, set);
+                }
+
+            }
+
+            for (Map.Entry m: map.entrySet()){
+                System.out.print(m.getKey().toString());
+                System.out.print(" + ");
+                for (Object s:(Set)m.getValue()){
+                    System.out.print(s);
+                    System.out.print(" | ");
+                }
+                System.out.println();
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
