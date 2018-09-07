@@ -1,12 +1,10 @@
 package pl.sda.jpa.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name="specjalizacje")
+@NamedQuery(name="Spec.findAll", query = "SELECT s FROM Specjalizacje s")
 public class Specjalizacje {
     @Id
     @Column(name = "ID_specjalizacja")

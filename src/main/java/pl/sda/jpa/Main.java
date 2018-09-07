@@ -2,11 +2,9 @@ package pl.sda.jpa;
 
 import pl.sda.jpa.model.Specjalizacje;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
-import javax.persistence.EntityManager;
+import javax.persistence.*;
 import javax.transaction.Transactional;
+import java.util.List;
 
 
 public class Main {
@@ -21,9 +19,15 @@ public class Main {
         entityManager = emf.createEntityManager();
         Specjalizacje specjalizacje = new Specjalizacje();
 
-        entityManager.getTransaction().begin();
+        //entityManager.getTransaction().begin();
 
         specjalizacje = entityManager.find(Specjalizacje.class, 1L);
+
+//        String jpql = "SELECT s FROM Specjalizacje s";
+//        TypedQuery query = entityManager.createQuery(jpql, Specjalizacje.class);
+//        List<Specjalizacje> spec = query.getResultList();
+        TypedQuery query1 = entityManager.createNamedQuery("Spec.findAll",Specjalizacje.class);
+        List<Specjalizacje> spec2 = query1.getResultList();
 
         entityManager.close();
         emf.close();
