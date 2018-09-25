@@ -1,6 +1,7 @@
 package pl.sda.jpa;
 
 import pl.sda.jpa.model.Lekarze;
+import pl.sda.jpa.model.Pacjenci;
 import pl.sda.jpa.model.Specjalizacje;
 
 import javax.persistence.EntityManager;
@@ -64,5 +65,15 @@ public class JpaDBService {
 
         Lekarze lekarze = em.find(Lekarze.class,id2);
         System.out.println(lekarze);
+    }
+
+    public void getJpaDBallPatients() {
+
+        String jpql = "SELECT p FROM Pacjenci p order by p.id";
+        List<Pacjenci> pacjenci = em.createQuery(jpql).getResultList();
+        for (Pacjenci p:pacjenci){
+            System.out.println("id:"+p.getId()+",imie:"+p.getImie()+",nazwisko:"+p.getNazwisko()+",pesel:"+p.getPesel());
+        }
+
     }
 }

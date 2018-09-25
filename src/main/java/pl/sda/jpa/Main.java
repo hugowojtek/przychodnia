@@ -55,6 +55,11 @@ public class Main {
                 long id2 = getDoctor();
                 jpaDBService.getJpaDBdoctorDetails(id2);
 
+            case 5:
+
+                jpaDBService.getJpaDBallPatients();
+                break;
+
 
             case 0:
                 System.out.println("kończe.....");
