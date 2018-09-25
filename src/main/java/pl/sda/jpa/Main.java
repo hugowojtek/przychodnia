@@ -42,12 +42,41 @@ public class Main {
                 jpaDBService.insertJpaDBnewDoctor(lekarz);
                 break;
 
+            case 3:
+
+                jpaDBService.getJpaDBallDoctors();
+               long id = removeDoctor();
+                jpaDBService.removeJpaDBdoctor(id);
+                break;
+
+            case 4:
+
+                jpaDBService.getJpaDBallDoctors();
+                long id2 = getDoctor();
+                jpaDBService.getJpaDBdoctorDetails(id2);
+
+
             case 0:
                 System.out.println("kończe.....");
                 System.exit(0);
 
             default:
         }
+    }
+
+
+    private static long getDoctor() {
+        System.out.println("podaj numer lekarza, którego chcesz szczegółowo zobaczyć");
+        long id = scanner.nextLong();
+        return id;
+
+    }
+
+    private static long removeDoctor() {
+        System.out.println("podaj numer lekarza, którego chcesz usunąć");
+        long id = scanner.nextLong();
+        return id;
+
     }
 
     private static Lekarze enterNewDoctor(Lekarze lekarz) {
