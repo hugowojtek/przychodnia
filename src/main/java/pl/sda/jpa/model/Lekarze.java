@@ -1,21 +1,23 @@
 package pl.sda.jpa.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "lekarze")
-public class Lekarze {
+public class Lekarze implements Serializable{
 
     @Column(name = "ID_lekarz")
-    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
 
     private String imie;
 
     private String nazwisko;
 
-    @ManyToOne
+    @ManyToOne//(fetch = FetchType.LAZY)
     @JoinColumn(name = "ID_specjalizacja")
     private Specjalizacje specjalizacja;
 
@@ -23,7 +25,7 @@ public class Lekarze {
     private String nrUprawnien;
 
     @Column(name="Nr_gabinetu")
-    private String nrGabinetu;
+    private Integer nrGabinetu;
 
     @Column(name="Nr_telefonu")
     private String nrTelefonu;
@@ -31,7 +33,7 @@ public class Lekarze {
     private String email;
 
     @Column(name="Cena_wizyty")
-    private String cenaWizyty;
+    private BigDecimal cenaWizyty;
 
     public Long getId() {
         return id;
@@ -73,11 +75,11 @@ public class Lekarze {
         this.nrUprawnien = nrUprawnien;
     }
 
-    public String getNrGabinetu() {
+    public Integer getNrGabinetu() {
         return nrGabinetu;
     }
 
-    public void setNrGabinetu(String nrGabinetu) {
+    public void setNrGabinetu(Integer nrGabinetu) {
         this.nrGabinetu = nrGabinetu;
     }
 
@@ -97,11 +99,11 @@ public class Lekarze {
         this.email = email;
     }
 
-    public String getCenaWizyty() {
+    public BigDecimal getCenaWizyty() {
         return cenaWizyty;
     }
 
-    public void setCenaWizyty(String cenaWizyty) {
+    public void setCenaWizyty(BigDecimal cenaWizyty) {
         this.cenaWizyty = cenaWizyty;
     }
 

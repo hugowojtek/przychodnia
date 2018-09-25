@@ -32,6 +32,12 @@ public class Main {
                 jpaDBService.getJpaDBallDoctors();
                 break;
 
+            case 2:
+
+                jpaDBService.getDate();
+                
+                break;
+
             case 0:
                 System.out.println("kończe.....");
                 System.exit(0);

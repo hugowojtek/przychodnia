@@ -1,13 +1,15 @@
 package pl.sda.jpa.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name="specjalizacje")
 @NamedQuery(name="Spec.findAll", query = "SELECT s FROM Specjalizacje s")
-public class Specjalizacje {
-    @Id
+public class Specjalizacje implements Serializable{
     @Column(name = "ID_specjalizacja")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
     private Long id;
     @Column(name="Specjalizacja", nullable = false)
     private String specialization;

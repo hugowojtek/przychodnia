@@ -13,11 +13,11 @@ import java.util.List;
 public class JpaDBService {
 
     private EntityManagerFactory emf;
-    private EntityManager entityManager;
+    private EntityManager em;
 
     public JpaDBService(){
         emf = Persistence.createEntityManagerFactory("JPA");
-        entityManager = emf.createEntityManager();
+        em = emf.createEntityManager();
     }
     @Transactional
     public void getDate() {
@@ -25,22 +25,22 @@ public class JpaDBService {
 
         Specjalizacje specjalizacje = new Specjalizacje();
 
-        //entityManager.getTransaction().begin();
+        em.getTransaction().begin();
 
-        specjalizacje = entityManager.find(Specjalizacje.class, 1L);
+        specjalizacje = em.find(Specjalizacje.class, 1L);
 
         //        String jpql = "SELECT s FROM Specjalizacje s";
 //        TypedQuery query = entityManager.createQuery(jpql, Specjalizacje.class);
 //        List<Specjalizacje> spec = query.getResultList();
-        TypedQuery query1 = entityManager.createNamedQuery("Spec.findAll", Specjalizacje.class);
-        List<Specjalizacje> spec2 = query1.getResultList();
+//        TypedQuery query1 = entityManager.createNamedQuery("Spec.findAll", Specjalizacje.class);
+//        List<Specjalizacje> spec2 = query1.getResultList();
+//
+//        for (Specjalizacje s:spec2){
+//            System.out.println(s);
+//        }
 
-        for (Specjalizacje s:spec2){
-            System.out.println(s);
-        }
+        em.close();
 
-        entityManager.close();
-        emf.close();
 
         System.out.println();
     }
@@ -48,9 +48,19 @@ public class JpaDBService {
     @Transactional
     public void getJpaDBallDoctors() {
 
+        em.getTransaction().begin();
+
         Lekarze lekarze = new Lekarze();
-        lekarze = entityManager.find(Lekarze.class,1L);
+
+        lekarze = em.find(Lekarze.class, 1L);
+
         System.out.println(lekarze);
+
+//        List<Lekarze> lekarze = em.createQuery("select l from Lekarze l").getResultList();
+
+        em.close();
+
+
 
     }
 }
