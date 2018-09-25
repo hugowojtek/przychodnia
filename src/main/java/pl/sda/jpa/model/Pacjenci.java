@@ -102,4 +102,20 @@ public class Pacjenci {
     public void setWojewodztwo(Wojewodztwa wojewodztwo) {
         this.wojewodztwo = wojewodztwo;
     }
+
+    @Override
+    public String toString() {
+        return "Pacjenci{" +
+                "id=" + id +
+                ", imie='" + imie + '\'' +
+                ", nazwisko='" + nazwisko + '\'' +
+                ", pesel='" + pesel + '\'' +
+                ", dataUrodzenia=" + dataUrodzenia +
+                ", plec='" + plec + '\'' +
+                ", miasto='" + miasto + '\'' +
+                ", ulica='" + ulica + '\'' +
+                ", nrLokalu='" + nrLokalu + '\'' +
+                ", wojewodztwo=" + wojewodztwo +
+                '}';
+    }
 }

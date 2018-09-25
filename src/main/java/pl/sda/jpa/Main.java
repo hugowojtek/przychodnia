@@ -60,6 +60,16 @@ public class Main {
                 jpaDBService.getJpaDBallPatients();
                 break;
 
+            case 6:
+                jpaDBService.getJpaDBVisitsWithDate();
+                break;
+
+            case 7:
+
+                jpaDBService.getJpaDBallPatients();
+                Long id3 = getPatient();
+                jpaDBService.getJpaDBpatientDetails(id3);
+                break;
 
             case 0:
                 System.out.println("kończe.....");
@@ -69,6 +79,13 @@ public class Main {
         }
     }
 
+
+    private static long getPatient() {
+        System.out.println("podaj numer pacjenta, którego chcesz szczegółowo zobaczyć");
+        Long id = scanner.nextLong();
+        return id;
+
+    }
 
     private static long getDoctor() {
         System.out.println("podaj numer lekarza, którego chcesz szczegółowo zobaczyć");
