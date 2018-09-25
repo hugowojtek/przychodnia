@@ -18,6 +18,7 @@ public class JpaDBService {
     public JpaDBService(){
         emf = Persistence.createEntityManagerFactory("JPA");
         em = emf.createEntityManager();
+        em.getTransaction().begin();
     }
     @Transactional
     public void getDate() {
@@ -25,9 +26,9 @@ public class JpaDBService {
 
         Specjalizacje specjalizacje = new Specjalizacje();
 
-        em.getTransaction().begin();
-
         specjalizacje = em.find(Specjalizacje.class, 1L);
+
+        System.out.println(specjalizacje);
 
         //        String jpql = "SELECT s FROM Specjalizacje s";
 //        TypedQuery query = entityManager.createQuery(jpql, Specjalizacje.class);
@@ -39,16 +40,17 @@ public class JpaDBService {
 //            System.out.println(s);
 //        }
 
-        em.close();
+//        em.close();
+//        emf.close();
 
 
-        System.out.println();
+
     }
 
     @Transactional
     public void getJpaDBallDoctors() {
 
-        em.getTransaction().begin();
+
 
         Lekarze lekarze = new Lekarze();
 
@@ -58,8 +60,9 @@ public class JpaDBService {
 
 //        List<Lekarze> lekarze = em.createQuery("select l from Lekarze l").getResultList();
 
-        em.close();
 
+//        em.close();
+//        emf.close();
 
 
     }

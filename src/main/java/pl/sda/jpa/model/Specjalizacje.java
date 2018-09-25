@@ -31,6 +31,6 @@ public class Specjalizacje implements Serializable{
     }
 
     public String toString(){
-        return "id:"+id+"-specjalizacja"+specialization;
+        return "id:"+id+"-specjalizacja:"+specialization;
     }
 }
