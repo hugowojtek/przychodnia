@@ -15,11 +15,12 @@ public class JpaDBService {
     private EntityManagerFactory emf;
     private EntityManager em;
 
-    public JpaDBService(){
+    public JpaDBService() {
         emf = Persistence.createEntityManagerFactory("JPA");
         em = emf.createEntityManager();
         em.getTransaction().begin();
     }
+
     @Transactional
     public void getDate() {
 
@@ -44,26 +45,29 @@ public class JpaDBService {
 //        emf.close();
 
 
-
     }
 
     @Transactional
-    public void getJpaDBallDoctors() {
+    public void getJpaDBallDoctorsAndSpecial() {
 
+        String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
+        List<Lekarze> lekarze = em.createQuery(jpql).getResultList();
+        for (Lekarze l : lekarze) {
+            System.out.println(l);
+        }
+    }
 
+    @Transactional
+    public void insertJpaDBnewDoctor(Lekarze lekarz) {
 
-        Lekarze lekarze = new Lekarze();
+        em.persist(lekarz);
 
-        lekarze = em.find(Lekarze.class, 1L);
+    }
 
-        System.out.println(lekarze);
+    public Specjalizacje getJpaDBSpecializationByIdNumber(Long spec) {
+        Specjalizacje specjalizacje = new Specjalizacje();
 
-//        List<Lekarze> lekarze = em.createQuery("select l from Lekarze l").getResultList();
-
-
-//        em.close();
-//        emf.close();
-
-
+        specjalizacje = em.find(Specjalizacje.class,spec);
+        return specjalizacje;
     }
 }

@@ -1,6 +1,10 @@
 package pl.sda.jpa;
 
 
+import pl.sda.jpa.model.Lekarze;
+import pl.sda.jpa.model.Specjalizacje;
+
+import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class Main {
@@ -28,14 +32,14 @@ public class Main {
         switch(number){
             case 1:
 
-                //jpaDBService.getDate();
-                jpaDBService.getJpaDBallDoctors();
+                jpaDBService.getJpaDBallDoctorsAndSpecial();
                 break;
 
             case 2:
 
-                jpaDBService.getDate();
-                
+                Lekarze lekarz = new Lekarze();
+                lekarz = enterNewDoctor(lekarz);
+                jpaDBService.insertJpaDBnewDoctor(lekarz);
                 break;
 
             case 0:
@@ -44,6 +48,55 @@ public class Main {
 
             default:
         }
+    }
+
+    private static Lekarze enterNewDoctor(Lekarze lekarz) {
+
+        System.out.println("podaj imię lekarza");
+        String name = scanner.next();
+        lekarz.setImie(name);
+
+        System.out.println("podaj nazwisko lekarza");
+        String surname = scanner.next();
+        lekarz.setNazwisko(surname);
+
+        System.out.println("podaj specjalizację");
+        System.out.println("1-kardiolog");
+        System.out.println("2-laryngolog");
+        System.out.println("3-neurolog");
+        System.out.println("4-internista");
+        System.out.println("5-okulista");
+        System.out.println("6-chirurg");
+        System.out.println("7-psychiatra");
+        Long spec = scanner.nextLong();
+
+        Specjalizacje specjalizacje;
+        specjalizacje = jpaDBService.getJpaDBSpecializationByIdNumber(spec);
+
+        lekarz.setSpecjalizacja(specjalizacje);
+
+        System.out.println("podaj numer uprawnień");
+        String nr_perm = scanner.next();
+        lekarz.setNrUprawnien(nr_perm);
+
+        System.out.println("podaj numer gabinetu");
+        Integer nr_office = scanner.nextInt();
+        lekarz.setNrGabinetu(nr_office);
+
+        System.out.println("podaj numer telefonu");
+        String nr_phone = scanner.next();
+        lekarz.setNrTelefonu(nr_phone);
+
+        System.out.println("podaj email");
+        String email = scanner.next();
+        lekarz.setEmail(email);
+
+        System.out.println("podaj cenę wizyty");
+        String price_visit = scanner.next();
+        BigDecimal bigDecimal = new BigDecimal(price_visit);
+        lekarz.setCenaWizyty(bigDecimal);
+
+        return lekarz;
     }
 
     private static void showMenu() {
