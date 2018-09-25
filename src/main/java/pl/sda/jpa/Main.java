@@ -1,37 +1,65 @@
 package pl.sda.jpa;
 
-import pl.sda.jpa.model.Specjalizacje;
 
-import javax.persistence.*;
-import javax.transaction.Transactional;
-import java.util.List;
-
+import java.util.Scanner;
 
 public class Main {
 
-    private static EntityManagerFactory emf;
-    private static EntityManager entityManager;
+    private static JpaDBService jpaDBService = null;
+    private static Scanner scanner = null;
 
-    @Transactional
+    public Main(){
+       jpaDBService = new JpaDBService();
+       scanner = new Scanner(System.in);
+
+    }
     public static void main(String[] args) {
+        new Main();
 
-        emf = Persistence.createEntityManagerFactory("JPA");
-        entityManager = emf.createEntityManager();
-        Specjalizacje specjalizacje = new Specjalizacje();
+        while(true){
+            showMenu();
+            choice();
+        }
+    }
 
-        //entityManager.getTransaction().begin();
+    private static void choice(){
+        Integer number = scanner.nextInt();
 
-        specjalizacje = entityManager.find(Specjalizacje.class, 1L);
+        switch(number){
+            case 1:
 
-//        String jpql = "SELECT s FROM Specjalizacje s";
-//        TypedQuery query = entityManager.createQuery(jpql, Specjalizacje.class);
-//        List<Specjalizacje> spec = query.getResultList();
-        TypedQuery query1 = entityManager.createNamedQuery("Spec.findAll",Specjalizacje.class);
-        List<Specjalizacje> spec2 = query1.getResultList();
+                //jpaDBService.getDate();
+                jpaDBService.getJpaDBallDoctors();
+                break;
 
-        entityManager.close();
-        emf.close();
+            case 0:
+                System.out.println("kończe.....");
+                System.exit(0);
 
-        System.out.println();
+            default:
+        }
+    }
+
+    private static void showMenu() {
+        System.out.println("**************************");
+        System.out.println("***Przychodnia lekarska***");
+        System.out.println("1-lista dostępnych lekarzy");
+        System.out.println("2-dodaj nowego lekarza");
+        System.out.println("3-usuń istniejacego lekarza");
+        System.out.println("4-wyświetl lekarza szczegółowo");
+        System.out.println("5-lista dostępnych pacjentów");
+        System.out.println("6-lista zarezerwowanych wizyt");
+        System.out.println("7-wyświetl pacjenta szczegółowo");
+        System.out.println("8-dodaj nowego pacjenta");
+        System.out.println("9-usuń istniejacego pacjenta");
+
+        System.out.println("11-dodaj nowy termin wizyty");
+        System.out.println("12-usuń stary termin wizyty");
+        System.out.println("13-wizyty danego lekarza");
+        System.out.println("14-wizyty wszystkich lekarzy");
+        System.out.println("15-wizyty danego pacjenta");
+
+        System.out.println("0-zakończ program");
+        System.out.println("?");
     }
 }
