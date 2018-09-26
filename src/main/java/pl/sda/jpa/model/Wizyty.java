@@ -1,8 +1,11 @@
 package pl.sda.jpa.model;
 
+import org.hibernate.type.DateType;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Entity
 public class Wizyty {
@@ -23,10 +26,10 @@ public class Wizyty {
     private Pacjenci pacjent;
 
     @Column(name = "Data_wizyty")
-    Date dataWizyty;
+    LocalDateTime dataWizyty;
 
     @Column(name = "Data_umowienia")
-    Date dataUmowienia;
+    LocalDateTime dataUmowienia;
 
     @Column(name = "Aktualna_cena_wizyty")
     private BigDecimal aktualnaCenaWizyty;
@@ -55,19 +58,19 @@ public class Wizyty {
         this.pacjent = pacjent;
     }
 
-    public Date getDataWizyty() {
+    public LocalDateTime getDataWizyty() {
         return dataWizyty;
     }
 
-    public void setDataWizyty(Date dataWizyty) {
+    public void setDataWizyty(LocalDateTime dataWizyty) {
         this.dataWizyty = dataWizyty;
     }
 
-    public Date getDataUmowienia() {
+    public LocalDateTime getDataUmowienia() {
         return dataUmowienia;
     }
 
-    public void setDataUmowienia(Date dataUmowienia) {
+    public void setDataUmowienia(LocalDateTime dataUmowienia) {
         this.dataUmowienia = dataUmowienia;
     }
 
