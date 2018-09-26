@@ -108,4 +108,11 @@ public class JpaDBService {
         em.persist(pacjent);
 
     }
+
+    @Transactional
+    public void removeJpaDBpatient(long id4) {
+
+        Pacjenci pacjent = em.find(Pacjenci.class, id4);
+        em.remove(pacjent);
+    }
 }

@@ -77,9 +77,17 @@ public class Main {
 
 
             case 8:
+
                 Pacjenci pacjent = new Pacjenci();
                 pacjent = enterNewPatient(pacjent);
                 jpaDBService.insertJpaDBnewPatient(pacjent);
+                break;
+
+            case 9:
+
+                jpaDBService.getJpaDBallPatients();
+                long id4 = removePatient();
+                jpaDBService.removeJpaDBpatient(id4);
                 break;
 
             case 0:
@@ -107,6 +115,13 @@ public class Main {
 
     private static long removeDoctor() {
         System.out.println("podaj numer lekarza, którego chcesz usunąć");
+        long id = scanner.nextLong();
+        return id;
+
+    }
+
+    private static long removePatient() {
+        System.out.println("podaj numer pacjenta, którego chcesz usunąć");
         long id = scanner.nextLong();
         return id;
 
