@@ -109,7 +109,20 @@ public class Main {
                     System.out.println("termin zajęty - wybierz inny");
                 }
 
+                break;
 
+            case 12:
+
+                jpaDBService.getJpaDBVisitsWithDate();
+                long idVisit = removeVisit();
+                jpaDBService.removeJpaDBvisit(idVisit);
+                break;
+
+            case 13:
+
+                jpaDBService.getJpaDBallDoctors();
+                long idDoctor2 = schowVisitForDoctor();
+                jpaDBService.getJpaDBvisitsAllForDoctorWithDate(idDoctor2);
                 break;
 
             case 0:
@@ -120,6 +133,15 @@ public class Main {
         }
     }
 
+    private static long schowVisitForDoctor() {
+        System.out.println("podaj numer id lekarza, którego wizyty chcesz zobaczyć");
+        return scanner.nextLong();
+    }
+
+    private static long removeVisit() {
+        System.out.println("podaj numer id wizyty do usunięcia");
+        return scanner.nextLong();
+    }
 
     private static LocalDateTime setNewVisitDate() {
         System.out.println("podaj date wizyty format YYYY-MM-ddThh-mm");

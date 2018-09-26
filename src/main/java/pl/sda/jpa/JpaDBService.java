@@ -190,4 +190,57 @@ public class JpaDBService {
 
         return true;
     }
+
+    public void removeJpaDBvisit(long idVisit) {
+
+        Wizyty wizyta = em.find(Wizyty.class, idVisit);
+        em.remove(wizyta);
+
+    }
+
+    public void getJpaDBvisitsAllForDoctorWithDate(long idDoctor2) {
+
+        String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
+
+        Lekarze lekarz = em.find(Lekarze.class, idDoctor2);
+        List<Wizyty> list = em.createQuery(jpql).setParameter(1, lekarz).getResultList();
+
+        Set<String> set = null;
+        Map<String, Set<String>> map = new TreeMap<String, Set<String>>();
+
+        for (Wizyty w : list) {
+            String visit = String.valueOf(w.getDataWizyty());
+            String date = visit.substring(0, 10);
+            String time = visit.substring(11);
+
+            set = new TreeSet<String>();
+            boolean mark = false;
+
+            for (Map.Entry m : map.entrySet()) {
+                if (date.equals(m.getKey())) {
+
+                    Set<String> set2 = (Set) m.getValue();
+                    set2.add(time);
+                    m.setValue(set2);
+                    mark = true;
+                    break;
+                }
+            }
+
+            if (!(mark)) {
+                set.add(time);
+                map.put(date, set);
+            }
+        }
+
+        for (Map.Entry m : map.entrySet()) {
+            System.out.print(m.getKey().toString());
+            System.out.print(" + ");
+            for (Object s : (Set) m.getValue()) {
+                System.out.print(s);
+                System.out.print(" | ");
+            }
+            System.out.println();
+        }
+    }
 }
