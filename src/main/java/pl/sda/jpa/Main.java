@@ -125,12 +125,28 @@ public class Main {
                 jpaDBService.getJpaDBvisitsAllForDoctorWithDate(idDoctor2);
                 break;
 
+            case 14:
+
+                jpaDBService.getJpaDBvisitsAllForEveryDoctorsWithDate();
+                break;
+
+            case 15:
+                jpaDBService.getJpaDBallPatients();
+                long idPatient2 = showVisitForPatient();
+                jpaDBService.getDBvisitsAllForPatient(idPatient2);
+                break;
+
             case 0:
                 System.out.println("kończe.....");
                 System.exit(0);
 
             default:
         }
+    }
+
+    private static long showVisitForPatient() {
+        System.out.println("podaj numer id pacjenta, którego wizyty chcesz zobaczyć");
+        return scanner.nextLong();
     }
 
     private static long schowVisitForDoctor() {

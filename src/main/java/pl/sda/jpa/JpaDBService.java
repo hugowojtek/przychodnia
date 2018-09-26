@@ -243,4 +243,31 @@ public class JpaDBService {
             System.out.println();
         }
     }
+
+    public void getJpaDBvisitsAllForEveryDoctorsWithDate() {
+
+        String jpql = "SELECT l.id FROM Lekarze l ORDER BY l.id";
+
+        List<Long> list = em.createQuery(jpql).getResultList();
+
+        for (Long l : list) {
+            getJpaDBdoctorDetails(l);
+            getJpaDBvisitsAllForDoctorWithDate(l);
+        }
+    }
+
+    public void getDBvisitsAllForPatient(long idPatient2) {
+
+        Pacjenci pacjent = em.find(Pacjenci.class,idPatient2);
+
+        String jpql = "SELECT w FROM Wizyty w WHERE pacjent=?1";
+
+        List<Wizyty> list = em.createQuery(jpql).setParameter(1,pacjent).getResultList();
+
+        for (Wizyty w:list) {
+            System.out.println("id_wizyty:"+w.getLd()+"-data_wizyty:"+w.getDataWizyty()+"-dane_lekarza:"+w.getLekarz());
+        }
+
+    }
+
 }
