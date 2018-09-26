@@ -2,9 +2,12 @@ package pl.sda.jpa;
 
 
 import pl.sda.jpa.model.Lekarze;
+import pl.sda.jpa.model.Pacjenci;
 import pl.sda.jpa.model.Specjalizacje;
+import pl.sda.jpa.model.Wojewodztwa;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -12,24 +15,25 @@ public class Main {
     private static JpaDBService jpaDBService = null;
     private static Scanner scanner = null;
 
-    public Main(){
-       jpaDBService = new JpaDBService();
-       scanner = new Scanner(System.in);
+    public Main() {
+        jpaDBService = new JpaDBService();
+        scanner = new Scanner(System.in);
 
     }
+
     public static void main(String[] args) {
         new Main();
 
-        while(true){
+        while (true) {
             showMenu();
             choice();
         }
     }
 
-    private static void choice(){
+    private static void choice() {
         Integer number = scanner.nextInt();
 
-        switch(number){
+        switch (number) {
             case 1:
 
                 jpaDBService.getJpaDBallDoctorsAndSpecial();
@@ -45,7 +49,7 @@ public class Main {
             case 3:
 
                 jpaDBService.getJpaDBallDoctors();
-               long id = removeDoctor();
+                long id = removeDoctor();
                 jpaDBService.removeJpaDBdoctor(id);
                 break;
 
@@ -69,6 +73,13 @@ public class Main {
                 jpaDBService.getJpaDBallPatients();
                 Long id3 = getPatient();
                 jpaDBService.getJpaDBpatientDetails(id3);
+                break;
+
+
+            case 8:
+                Pacjenci pacjent = new Pacjenci();
+                pacjent = enterNewPatient(pacjent);
+                jpaDBService.insertJpaDBnewPatient(pacjent);
                 break;
 
             case 0:
@@ -99,6 +110,72 @@ public class Main {
         long id = scanner.nextLong();
         return id;
 
+    }
+
+    private static Pacjenci enterNewPatient(Pacjenci pacjent) {
+
+        System.out.println("podaj imię pacjenta");
+        String name = scanner.next();
+        pacjent.setImie(name);
+
+        System.out.println("podaj nazwisko pacjenta");
+        String surname = scanner.next();
+        pacjent.setNazwisko(surname);
+
+        System.out.println("podaj pesel pacjenta");
+        String pesel = scanner.next();
+        pacjent.setPesel(pesel);
+
+        System.out.println("podaj datę urodzenia pacjenta");
+        String dateBirth = scanner.next();
+        Date date = Date.valueOf(dateBirth);
+        pacjent.setDataUrodzenia(date);
+
+        System.out.println("podaj płeć pacjenta");
+        String sex = scanner.next();
+        pacjent.setPlec(sex);
+
+        System.out.println("podaj miasto zamieszkania pacjenta");
+        String city = scanner.next();
+        pacjent.setMiasto(city);
+
+        System.out.println("podaj ulicę zamieszkania pacjenta");
+        String street = scanner.next();
+        pacjent.setUlica(street);
+
+        System.out.println("podaj numer domu/lokalu pacjenta ");
+        String numberHouse = scanner.next();
+        pacjent.setNrLocalu(numberHouse);
+
+        System.out.println("podaj województwo");
+
+        System.out.println("1-dolnośląskie");
+        System.out.println("2-kujawsko-pomorskie");
+        System.out.println("3-lubelskie");
+        System.out.println("4-lubuskie");
+
+        System.out.println("5-łódzkie");
+        System.out.println("6-małopolskie");
+        System.out.println("7-mazowieckie");
+        System.out.println("8-opolskie");
+
+        System.out.println("9-podkarpackie");
+        System.out.println("10-podlaskie");
+        System.out.println("11-pomorskie");
+        System.out.println("12-śląskie");
+
+        System.out.println("13-świętokrzyskie");
+        System.out.println("14-warmińsko-mazurskie");
+        System.out.println("15-wielkopolskie");
+        System.out.println("16-zachodniopomorskie");
+
+        Long spec = scanner.nextLong();
+
+        Wojewodztwa wojewodztwa;
+        wojewodztwa = jpaDBService.getJpaDBDistrictByIdNumber(spec);
+        pacjent.setWojewodztwo(wojewodztwa);
+
+        return pacjent;
     }
 
     private static Lekarze enterNewDoctor(Lekarze lekarz) {
