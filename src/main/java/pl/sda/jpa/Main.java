@@ -90,6 +90,24 @@ public class Main {
                 jpaDBService.removeJpaDBpatient(id4);
                 break;
 
+
+            case 11:
+
+                jpaDBService.getJpaDBallDoctors();
+                long idDoctor = setNewVisitForDoctor();
+                jpaDBService.getJpaDBallPatients();
+                long idPatient = setNewVisitForPatient();
+                String  dateVisit = setNewVisitDate();
+                if (jpaDBService.insertJpaDBnewVisit(idDoctor, idPatient, dateVisit)) {
+                    System.out.println("wolny termin wiec rezerwujemy");
+                }
+                else {
+                    System.out.println("termin zajęty - wybierz inny");
+                }
+
+
+                break;
+
             case 0:
                 System.out.println("kończe.....");
                 System.exit(0);
@@ -98,6 +116,21 @@ public class Main {
         }
     }
 
+
+    private static String setNewVisitDate() {
+        System.out.println("podaj date wizyty format YY-MM-DD-hh-mm-00");
+        return scanner.next();
+    }
+
+    private static long setNewVisitForPatient() {
+        System.out.println("podaj numer id pacjenta, dla którego chcesz zamówić wizytę");
+        return scanner.nextLong();
+    }
+
+    private static long setNewVisitForDoctor() {
+        System.out.println("podaj numer id lekarza, do którego chcesz zamówić wizytę");
+        return scanner.nextLong();
+    }
 
     private static long getPatient() {
         System.out.println("podaj numer pacjenta, którego chcesz szczegółowo zobaczyć");

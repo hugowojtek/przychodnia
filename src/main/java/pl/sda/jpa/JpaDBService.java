@@ -5,9 +5,9 @@ import pl.sda.jpa.model.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
-import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
-import java.util.List;
+
+import java.util.*;
 
 public class JpaDBService {
 
@@ -114,5 +114,89 @@ public class JpaDBService {
 
         Pacjenci pacjent = em.find(Pacjenci.class, id4);
         em.remove(pacjent);
+    }
+
+    public boolean insertJpaDBnewVisit(long idDoctor, long idPatient, String dateVisit) {
+
+        String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
+
+        Lekarze lekarz = em.find(Lekarze.class,idDoctor);
+        List<Wizyty> list = em.createQuery(jpql).setParameter(1,lekarz).getResultList();
+
+        Set<String> set = null;
+        Map<String,Set<String>> map = new TreeMap<String, Set<String>>();
+
+//        try {
+//            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+//            preparedStatement = connection.prepareStatement(sql);
+//            preparedStatement.setInt(1, idDoctor);
+//            ResultSet resultSet = preparedStatement.executeQuery();
+//
+//
+//            while (resultSet.next()) {
+//                String visit = resultSet.getString("Data_wizyty");
+//                String date = visit.substring(0, 10);
+//                String time = visit.substring(11);
+//
+//                set = new TreeSet<String>();
+//                boolean mark = false;
+//
+//                for (Map.Entry m:map.entrySet()){
+//                    if (date.equals(m.getKey())){
+//
+//                        Set<String> set2 = (Set)m.getValue();
+//                        set2.add(time);
+//                        m.setValue(set2);
+//                        mark = true;
+//                        break;
+//                    }
+//                }
+//
+//                if (!(mark)) {
+//                    set.add(time);
+//                    map.put(date, set);
+//                }
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String dateForCheck = dateVisit.substring(0, 10);
+//        String timeForCheck = dateVisit.substring(11);
+//        Set<String> set3 = null;
+//        if (map.containsKey(dateForCheck)) {
+//            set3 = map.get(dateForCheck);
+//            if (set3.contains(timeForCheck)) {
+//                //System.out.println("termin zajęty");
+//                return false;
+//            } else {
+//                //System.out.println("wolny termin wiec rezerwujemy");
+//                set3.add(timeForCheck);
+//                map.put(dateForCheck, set3);
+//            }
+//        } else {
+//            //System.out.println("wolny termin wiec rezerwujemy");
+//            set3 = new TreeSet<String>();
+//            set3.add(timeForCheck);
+//            map.put(dateForCheck, set3);
+//        }
+//
+//
+//        String sql2 = "INSERT INTO wizyta(Pacjent,Lekarz,Data_wizyty,Data_umowienia) VALUES (?,?,?,?)";
+//
+//        try {
+//            connection = DriverManager.getConnection(URL_CONNECTION_STRING, USER, PASSWORD);
+//            preparedStatement = connection.prepareStatement(sql2);
+//            preparedStatement.setInt(1,idPatient);
+//            preparedStatement.setInt(2,idDoctor);
+//            preparedStatement.setString(3,dateVisit);
+//            preparedStatement.setString(4,"2010-01-01-01:00:00");
+//            preparedStatement.executeUpdate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+
+
+        return true;
     }
 }
