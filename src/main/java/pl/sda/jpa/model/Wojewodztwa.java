@@ -1,9 +1,10 @@
 package pl.sda.jpa.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class Wojewodztwa {
+public class Wojewodztwa implements Serializable{
 
     @Column(name = "ID_wojewodztwa")
     @Id

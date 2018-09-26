@@ -6,6 +6,8 @@ import pl.sda.jpa.model.Pacjenci;
 import pl.sda.jpa.model.Specjalizacje;
 import pl.sda.jpa.model.Wojewodztwa;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -18,6 +20,8 @@ public class Main {
 
     private static JpaDBService jpaDBService = null;
     private static Scanner scanner = null;
+    private static EntityManagerFactory emf;
+    private static EntityManager em;
 
     public Main() {
         jpaDBService = new JpaDBService();
@@ -138,6 +142,10 @@ public class Main {
 
             case 0:
                 System.out.println("kończe.....");
+//                em = jpaDBService.getEm();
+//                emf = jpaDBService.getEmf();
+//                em.close();
+//                emf.close();
                 System.exit(0);
 
             default:

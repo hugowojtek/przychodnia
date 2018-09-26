@@ -17,9 +17,18 @@ public class JpaDBService {
     private EntityManager em;
 
     public JpaDBService() {
-        emf = Persistence.createEntityManagerFactory("JPA");
-        em = emf.createEntityManager();
-        em.getTransaction().begin();
+
+        this.emf = Persistence.createEntityManagerFactory("JPA");
+        this.em = this.emf.createEntityManager();
+        this.em.getTransaction().begin();
+    }
+
+    public EntityManagerFactory getEmf(){
+        return emf;
+    }
+
+    public EntityManager getEm() {
+        return em;
     }
 
     @Transactional

@@ -1,10 +1,11 @@
 package pl.sda.jpa.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Date;
 
 @Entity
-public class Pacjenci {
+public class Pacjenci implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ID_pacjent")

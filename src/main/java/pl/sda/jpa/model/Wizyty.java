@@ -3,12 +3,13 @@ package pl.sda.jpa.model;
 import org.hibernate.type.DateType;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
-public class Wizyty {
+public class Wizyty implements Serializable{
     @Column(name = "ID_wizyty")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
