@@ -8,7 +8,11 @@ import pl.sda.jpa.model.Wojewodztwa;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 public class Main {
 
@@ -97,7 +101,7 @@ public class Main {
                 long idDoctor = setNewVisitForDoctor();
                 jpaDBService.getJpaDBallPatients();
                 long idPatient = setNewVisitForPatient();
-                String  dateVisit = setNewVisitDate();
+                LocalDateTime dateVisit = setNewVisitDate();
                 if (jpaDBService.insertJpaDBnewVisit(idDoctor, idPatient, dateVisit)) {
                     System.out.println("wolny termin wiec rezerwujemy");
                 }
@@ -117,9 +121,12 @@ public class Main {
     }
 
 
-    private static String setNewVisitDate() {
-        System.out.println("podaj date wizyty format YY-MM-DD-hh-mm-00");
-        return scanner.next();
+    private static LocalDateTime setNewVisitDate() {
+        System.out.println("podaj date wizyty format YYYY-MM-ddThh-mm");
+        String text = scanner.next();
+        DateTimeFormatter dateTimeFormatter = ISO_LOCAL_DATE_TIME;
+        LocalDateTime date = LocalDateTime.parse(text,dateTimeFormatter);
+        return date;
     }
 
     private static long setNewVisitForPatient() {
