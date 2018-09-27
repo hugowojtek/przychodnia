@@ -1,6 +1,8 @@
 package pl.sda.hibernate;
 
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import pl.sda.jpa.model.Lekarze;
 import pl.sda.jpa.model.Pacjenci;
 import pl.sda.jpa.model.Specjalizacje;
@@ -17,11 +19,16 @@ import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
 public class Main {
 
+    private static SessionFactory instance = null;
+    private static Session session = null;
     private static HibernateDBService hibernateDBService = null;
     private static Scanner scanner = null;
 
     public Main(){
-        hibernateDBService = new HibernateDBService();
+
+        instance = HbnConfig.getInstance();
+        session = instance.openSession();
+        hibernateDBService = new HibernateDBService(instance,session);
         scanner = new Scanner(System.in);
     }
 
@@ -140,6 +147,8 @@ public class Main {
 
             case 0:
                 System.out.println("kończe.....");
+                session.close();
+                instance.close();
                 System.exit(0);
 
             default:

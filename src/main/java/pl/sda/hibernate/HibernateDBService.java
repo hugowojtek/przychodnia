@@ -14,10 +14,11 @@ public class HibernateDBService {
     private SessionFactory instance = null;
     private Session session = null;
 
-    public HibernateDBService() {
-        instance = HbnConfig.getInstance();
-        session = instance.openSession();
+    public HibernateDBService(SessionFactory instance,Session session) {
+        this.instance = instance;
+        this.session = session;
     }
+
     @Transactional
     public void getJpaDBallDoctors() {
         String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
@@ -27,7 +28,7 @@ public class HibernateDBService {
         }
     }
 
-    @Transactional
+ //   @Transactional
     public void getJpaDBallDoctorsAndSpecial() {
 
         String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
