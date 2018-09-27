@@ -5,6 +5,7 @@ import pl.sda.jpa.model.*;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import javax.transaction.Transaction;
 import javax.transaction.Transactional;
 
 import java.math.BigDecimal;
@@ -16,19 +17,11 @@ public class JpaDBService {
     private EntityManagerFactory emf;
     private EntityManager em;
 
-    public JpaDBService() {
+    public JpaDBService(EntityManagerFactory emf,EntityManager em) {
 
-        this.emf = Persistence.createEntityManagerFactory("JPA");
-        this.em = this.emf.createEntityManager();
-        this.em.getTransaction().begin();
-    }
+        this.emf = emf;
+        this.em = em;
 
-    public EntityManagerFactory getEmf(){
-        return emf;
-    }
-
-    public EntityManager getEm() {
-        return em;
     }
 
     @Transactional
@@ -40,14 +33,17 @@ public class JpaDBService {
         }
     }
 
-    @Transactional
+//    @Transactional
     public void getJpaDBallDoctorsAndSpecial() {
+
 
         String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
         List<Lekarze> lekarze = em.createQuery(jpql).getResultList();
         for (Lekarze l : lekarze) {
             System.out.println(l);
         }
+
+
     }
 
     @Transactional
@@ -85,6 +81,7 @@ public class JpaDBService {
 
         Lekarze lekarze = em.find(Lekarze.class, id2);
         System.out.println(lekarze);
+
     }
 
     @Transactional
