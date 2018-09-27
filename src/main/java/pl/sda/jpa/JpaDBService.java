@@ -132,6 +132,12 @@ public class JpaDBService {
         String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
 
         Lekarze lekarz = em.find(Lekarze.class, idDoctor);
+
+        if (lekarz==null) {
+            System.out.println("Brak tego lekarza wybierz innego");
+            return false;
+        }
+
         List<Wizyty> list = em.createQuery(jpql).setParameter(1, lekarz).getResultList();
 
         Set<String> set = null;

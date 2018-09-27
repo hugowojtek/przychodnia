@@ -9,20 +9,17 @@ import java.sql.Date;
 import java.time.LocalDateTime;
 
 @Entity
-public class Wizyty implements Serializable{
+public class Wizyty implements Serializable {
     @Column(name = "ID_wizyty")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ld;
 
-//    @Column(name = "Lekarz")
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "ID_lekarz")
-
     private Lekarze lekarz;
 
-//    @Column(name = "Pacjent")
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "ID_pacjent")
     private Pacjenci pacjent;
 
@@ -50,6 +47,7 @@ public class Wizyty implements Serializable{
     public void setLekarz(Lekarze lekarz) {
         this.lekarz = lekarz;
     }
+
 
     public Pacjenci getPacjent() {
         return pacjent;
