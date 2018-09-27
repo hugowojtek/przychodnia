@@ -63,6 +63,7 @@ public class Main {
                 hibernateDBService.getJpaDBallDoctors();
                 long id2 = getDoctor();
                 hibernateDBService.getJpaDBdoctorDetails(id2);
+                break;
 
             case 5:
 
