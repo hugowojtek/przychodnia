@@ -8,6 +8,7 @@ import pl.sda.jpa.model.Wojewodztwa;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.time.LocalDateTime;
@@ -24,7 +25,9 @@ public class Main {
     private static EntityManager em;
 
     public Main() {
-        jpaDBService = new JpaDBService();
+        emf = Persistence.createEntityManagerFactory("JPA");
+        em = emf.createEntityManager();
+        jpaDBService = new JpaDBService(emf,em);
         scanner = new Scanner(System.in);
 
     }
@@ -66,6 +69,7 @@ public class Main {
                 jpaDBService.getJpaDBallDoctors();
                 long id2 = getDoctor();
                 jpaDBService.getJpaDBdoctorDetails(id2);
+                break;
 
             case 5:
 
@@ -142,10 +146,9 @@ public class Main {
 
             case 0:
                 System.out.println("kończe.....");
-//                em = jpaDBService.getEm();
-//                emf = jpaDBService.getEmf();
-//                em.close();
-//                emf.close();
+
+                em.close();
+                emf.close();
                 System.exit(0);
 
             default:

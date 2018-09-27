@@ -16,21 +16,13 @@ public class JpaDBService {
     private EntityManagerFactory emf;
     private EntityManager em;
 
-    public JpaDBService() {
+    public JpaDBService(EntityManagerFactory emf,EntityManager em) {
+            this.emf = emf;
+            this.em = em;
 
-        this.emf = Persistence.createEntityManagerFactory("JPA");
-        this.em = this.emf.createEntityManager();
-        this.em.getTransaction().begin();
+//        this.em.getTransaction().begin();
     }
 
-
-    public EntityManagerFactory getEmf(){
-        return emf;
-    }
-
-    public EntityManager getEm() {
-        return em;
-    }
 
     @Transactional
     public void getJpaDBallDoctors() {
@@ -41,7 +33,7 @@ public class JpaDBService {
         }
     }
 
-    @Transactional
+    //@Transactional
     public void getJpaDBallDoctorsAndSpecial() {
 
         String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
