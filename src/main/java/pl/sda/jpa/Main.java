@@ -25,6 +25,7 @@ public class Main {
     private static EntityManager em;
 
     public Main() {
+
         emf = Persistence.createEntityManagerFactory("JPA");
         em = emf.createEntityManager();
         jpaDBService = new JpaDBService(emf,em);
