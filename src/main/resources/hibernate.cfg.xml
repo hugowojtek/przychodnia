@@ -16,7 +16,9 @@
         <property name="show_sql">true</property>
         <mapping class="pl.sda.jpa.model.Specjalizacje"/>
         <mapping class="pl.sda.jpa.model.Lekarze"/>
+        <mapping class="pl.sda.jpa.model.Wojewodztwa"/>
+        <mapping class="pl.sda.jpa.model.Pacjenci"/>
+        <mapping class="pl.sda.jpa.model.Wizyty"/>
 
-        <!--<mapping class="pl.sda.model.Cruise"/>-->
-    </session-factory>
+        </session-factory>
 </hibernate-configuration>
