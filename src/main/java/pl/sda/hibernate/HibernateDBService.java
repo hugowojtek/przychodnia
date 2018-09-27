@@ -40,7 +40,7 @@ public class HibernateDBService {
     @Transactional
     public void insertJpaDBnewDoctor(Lekarze lekarz) {
 
-        session.persist(lekarz);
+        session.save(lekarz);
 
     }
 
@@ -103,7 +103,7 @@ public class HibernateDBService {
     @Transactional
     public void insertJpaDBnewPatient(Pacjenci pacjent) {
 
-        session.persist(pacjent);
+        session.save(pacjent);
 
     }
 
@@ -188,7 +188,7 @@ public class HibernateDBService {
 
         wizyta.setDataWizyty(dateVisit);
 
-        session.persist(wizyta);
+        session.save(wizyta);
 
         return true;
     }
