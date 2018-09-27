@@ -23,6 +23,7 @@ public class JpaDBService {
         this.em.getTransaction().begin();
     }
 
+
     public EntityManagerFactory getEmf(){
         return emf;
     }
