@@ -2,6 +2,7 @@ package pl.sda.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import pl.sda.jpa.model.*;
 
 import javax.transaction.Transactional;
@@ -13,13 +14,16 @@ public class HibernateDBService {
 
     private SessionFactory instance = null;
     private Session session = null;
+    private Transaction transaction = null;
 
     public HibernateDBService(SessionFactory instance,Session session) {
         this.instance = instance;
         this.session = session;
+        this.transaction = session.beginTransaction();
+
     }
 
-    @Transactional
+//    @Transactional
     public void getJpaDBallDoctors() {
         String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
         List<Lekarze> lekarze = session.createQuery(jpql).getResultList();
@@ -28,7 +32,7 @@ public class HibernateDBService {
         }
     }
 
- //   @Transactional
+  //  @Transactional
     public void getJpaDBallDoctorsAndSpecial() {
 
         String jpql = "SELECT l FROM Lekarze l ORDER BY l.nazwisko";
@@ -38,14 +42,14 @@ public class HibernateDBService {
         }
     }
 
-    @Transactional
+  //  @Transactional
     public void insertJpaDBnewDoctor(Lekarze lekarz) {
 
         session.save(lekarz);
 
     }
 
-    @Transactional
+ //   @Transactional
     public Wojewodztwa getJpaDBDistrictByIdNumber(Long district) {
         Wojewodztwa wojewodztwa;
 
@@ -53,7 +57,7 @@ public class HibernateDBService {
         return wojewodztwa;
     }
 
-    @Transactional
+ //   @Transactional
     public Specjalizacje getJpaDBSpecializationByIdNumber(Long spec) {
         Specjalizacje specjalizacje;
 
@@ -61,21 +65,21 @@ public class HibernateDBService {
         return specjalizacje;
     }
 
-    @Transactional
+ //   @Transactional
     public void removeJpaDBdoctor(Long id) {
 
         Lekarze lekarze = session.find(Lekarze.class, id);
         session.remove(lekarze);
     }
 
-    @Transactional
+  //  @Transactional
     public void getJpaDBdoctorDetails(long id2) {
 
         Lekarze lekarze = session.find(Lekarze.class, id2);
         System.out.println(lekarze);
     }
 
-    @Transactional
+//    @Transactional
     public void getJpaDBallPatients() {
 
         String jpql = "SELECT p FROM Pacjenci p ORDER BY p.id";
@@ -86,7 +90,7 @@ public class HibernateDBService {
 
     }
 
-    @Transactional
+ //   @Transactional
     public void getJpaDBVisitsWithDate() {
         String jpql = "SELECT w FROM Wizyty w ORDER BY w.id";
         List<Wizyty> wizyty = session.createQuery(jpql).getResultList();
@@ -95,26 +99,26 @@ public class HibernateDBService {
         }
     }
 
-    @Transactional
+ //   @Transactional
     public void getJpaDBpatientDetails(Long id3) {
         Pacjenci pacjent = session.find(Pacjenci.class, id3);
         System.out.println(pacjent);
     }
 
-    @Transactional
+ //   @Transactional
     public void insertJpaDBnewPatient(Pacjenci pacjent) {
 
         session.save(pacjent);
 
     }
 
-    @Transactional
+ //   @Transactional
     public void removeJpaDBpatient(long id4) {
 
         Pacjenci pacjent = session.find(Pacjenci.class, id4);
         session.remove(pacjent);
     }
-
+//    @Transactional
     public boolean insertJpaDBnewVisit(long idDoctor, long idPatient, LocalDateTime dateVisit) {
 
         String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
@@ -193,14 +197,14 @@ public class HibernateDBService {
 
         return true;
     }
-
+ //   @Transactional
     public void removeJpaDBvisit(long idVisit) {
 
         Wizyty wizyta = session.find(Wizyty.class, idVisit);
         session.remove(wizyta);
 
     }
-
+ //   @Transactional
     public void getJpaDBvisitsAllForDoctorWithDate(long idDoctor2) {
 
         String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
@@ -246,7 +250,7 @@ public class HibernateDBService {
             System.out.println();
         }
     }
-
+ //   @Transactional
     public void getJpaDBvisitsAllForEveryDoctorsWithDate() {
 
         String jpql = "SELECT l.id FROM Lekarze l ORDER BY l.id";
@@ -258,7 +262,7 @@ public class HibernateDBService {
             getJpaDBvisitsAllForDoctorWithDate(l);
         }
     }
-
+ //   @Transactional
     public void getDBvisitsAllForPatient(long idPatient2) {
 
         Pacjenci pacjent = session.find(Pacjenci.class,idPatient2);

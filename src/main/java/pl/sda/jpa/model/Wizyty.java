@@ -15,11 +15,11 @@ public class Wizyty implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ld;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne//(cascade = {CascadeType.ALL})
     @JoinColumn(name = "ID_lekarz")
     private Lekarze lekarz;
 
-    @OneToOne(cascade = {CascadeType.ALL})
+    @OneToOne//(cascade = {CascadeType.ALL})
     @JoinColumn(name = "ID_pacjent")
     private Pacjenci pacjent;
 

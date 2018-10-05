@@ -28,6 +28,7 @@ public class Main {
 
         instance = HbnConfig.getInstance();
         session = instance.openSession();
+
         hibernateDBService = new HibernateDBService(instance,session);
         scanner = new Scanner(System.in);
     }

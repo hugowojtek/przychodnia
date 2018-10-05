@@ -16,11 +16,11 @@ public class JpaDBService {
     private EntityManagerFactory emf;
     private EntityManager em;
 
-    public JpaDBService(EntityManagerFactory emf,EntityManager em) {
-            this.emf = emf;
-            this.em = em;
+    public JpaDBService(EntityManagerFactory emf, EntityManager em) {
+        this.emf = emf;
+        this.em = em;
 
-//        this.em.getTransaction().begin();
+        this.em.getTransaction().begin();
     }
 
 
@@ -120,13 +120,14 @@ public class JpaDBService {
         em.remove(pacjent);
     }
 
+    @Transactional
     public boolean insertJpaDBnewVisit(long idDoctor, long idPatient, LocalDateTime dateVisit) {
 
         String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
 
         Lekarze lekarz = em.find(Lekarze.class, idDoctor);
 
-        if (lekarz==null) {
+        if (lekarz == null) {
             System.out.println("Brak tego lekarza wybierz innego");
             return false;
         }
@@ -199,6 +200,7 @@ public class JpaDBService {
         return true;
     }
 
+    @Transactional
     public void removeJpaDBvisit(long idVisit) {
 
         Wizyty wizyta = em.find(Wizyty.class, idVisit);
@@ -206,6 +208,7 @@ public class JpaDBService {
 
     }
 
+    @Transactional
     public void getJpaDBvisitsAllForDoctorWithDate(long idDoctor2) {
 
         String jpql = "SELECT w FROM Wizyty w WHERE w.lekarz=?1";
@@ -252,6 +255,7 @@ public class JpaDBService {
         }
     }
 
+    @Transactional
     public void getJpaDBvisitsAllForEveryDoctorsWithDate() {
 
         String jpql = "SELECT l.id FROM Lekarze l ORDER BY l.id";
@@ -264,16 +268,17 @@ public class JpaDBService {
         }
     }
 
+    @Transactional
     public void getDBvisitsAllForPatient(long idPatient2) {
 
-        Pacjenci pacjent = em.find(Pacjenci.class,idPatient2);
+        Pacjenci pacjent = em.find(Pacjenci.class, idPatient2);
 
         String jpql = "SELECT w FROM Wizyty w WHERE pacjent=?1";
 
-        List<Wizyty> list = em.createQuery(jpql).setParameter(1,pacjent).getResultList();
+        List<Wizyty> list = em.createQuery(jpql).setParameter(1, pacjent).getResultList();
 
-        for (Wizyty w:list) {
-            System.out.println("id_wizyty:"+w.getLd()+"-data_wizyty:"+w.getDataWizyty()+"-dane_lekarza:"+w.getLekarz());
+        for (Wizyty w : list) {
+            System.out.println("id_wizyty:" + w.getLd() + "-data_wizyty:" + w.getDataWizyty() + "-dane_lekarza:" + w.getLekarz());
         }
 
     }
