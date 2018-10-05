@@ -22,6 +22,8 @@ public class JpaDBService {
         this.emf = emf;
         this.em = em;
 
+        this.em.getTransaction().begin();
+
     }
 
     @Transactional
@@ -33,7 +35,7 @@ public class JpaDBService {
         }
     }
 
-//    @Transactional
+    @Transactional
     public void getJpaDBallDoctorsAndSpecial() {
 
 
